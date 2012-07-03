@@ -42,6 +42,10 @@ static const int PIN_In4 = 7;
 */
 
 ISR(TIMER0_COMPA_vect) {
+  if(!(PIND & _BV(PD2))) {
+    // only run when button held
+    return;
+  }
   static bool flippy = false;
   flippy = !flippy;
   if(flippy) {  // alternating times
@@ -53,9 +57,11 @@ ISR(TIMER0_COMPA_vect) {
   }
 }
 
-int main(void) {
+void setup(void) {
   /*bit 1 is for serial */
   DDRD = 0b11111110;
+  DDRC = 0; // In particular, PD0 is unset, ie, input
+  PORTC = 1; // Use built-in pull-up resistor.
 
   /* On: EnA, In1, In3.
      Off: Enb, In2, In4.*/
@@ -69,6 +75,11 @@ int main(void) {
 
   /* and hang out */
   sei();
-  while(1) { };
-  return -1;
+}
+
+void loop(void) { }
+
+int main(void) {
+  setup();
+  while(true){loop();}
 }
