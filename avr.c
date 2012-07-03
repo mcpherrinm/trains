@@ -13,7 +13,7 @@ ISR(TIMER1_COMPA_vect) {
   static char outbits[] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
                            0,    1, 0, 1, 0, 1, 0, 1, 0,
                            0,    1, 0, 1, 0, 1, 0, 1, 0,
-                           0,    0, 0, 0, 0, 0, 0, 0, 0, 1}
+                           0,    0, 0, 0, 0, 0, 0, 0, 0, 1};
   static int idx = 0;
   if(outbits[idx]) {
     PORTD |= (1 << 3);
