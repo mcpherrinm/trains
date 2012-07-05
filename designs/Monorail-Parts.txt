@@ -1,0 +1,18 @@
+Parts required
+--------------
+
+2 bogies (1 power, 1 idle):
+	1: Bogie cutout from monorail-bogies.dwg in 1/4" hardboard
+	4: wheel axle bolts, 1".
+	8: Wheel axle nuts.
+	2: bolts, length?? for bottom of bogie
+	4: nuts, for bottom of bogie
+	1: pivot bolt. 2"
+	1: pivot nut
+	2: Stepper motors
+	1: stepper driver
+	1: embedded dude to control	
+
+Body:
+	1: long thing to be the body.
+	1: pivot nut
