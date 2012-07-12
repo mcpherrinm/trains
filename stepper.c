@@ -42,7 +42,7 @@ static const int PIN_In4 = 7;
 */
 
 ISR(TIMER0_COMPA_vect) {
-  if(!(PIND & _BV(PD2))) {
+  if(!(PIND & _BV(PD0))) {
     // only run when button held
     return;
   }
