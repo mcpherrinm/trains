@@ -40,7 +40,6 @@ static const int PIN_In3 = 6;
 static const int PIN_In4 = 7;
 
 ISR(TIMER0_COMPA_vect) {
-  static bool running = true;
   if(!(PINC & _BV(PC0))) {
     // only run when button held
     // Danger: This leaves coils on.
@@ -100,7 +99,9 @@ void setup(void) {
 
 void loop(void) { }
 
+#ifdef INCLUDE_ARDUINO_MAIN
 int main(void) {
   setup();
   while(true){loop();}
 }
+#endif

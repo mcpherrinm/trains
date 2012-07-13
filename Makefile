@@ -126,7 +126,7 @@ CSTANDARD = -std=gnu99
 
 
 # Place -D or -U options here for C sources
-CDEFS = -DF_CPU=$(F_CPU)UL
+CDEFS = -DF_CPU=$(F_CPU)UL -DINCLUDE_ARDUINO_MAIN
 
 
 # Place -D or -U options here for ASM sources
