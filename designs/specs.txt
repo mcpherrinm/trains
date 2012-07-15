@@ -4,9 +4,8 @@ Monorail specifications
 The track is made from 5/8" (todo: confirm this is what I was using) MDF (or
 whatever).
 
-The track is nominally 74 mm wide, up to 75mm and down to 72mm.  Trains should
-be designed to allow straight 78mm track, and to run on 70mm.  (Todo: Evaluate
-safety margins)
+The track is nominally 75 mm wide, up to 76mm and down to 72mm.  Trains should
+be designed to allow straight 78mm track, and to run on 70mm.
 
 
 On top of the track, at least 50mm of clearance from the top surface.  Beside
@@ -30,5 +29,11 @@ additional traction -- MDF isn't the best surface.  Hockey tape?
 Power options are still being evaluated.  Initially, trains are being tethered
 to power.  Battery power in stage 2, and then some hybrid online charging
 solution.
+
+
+
+Material specs:
+Track MDF is between 17 and 18mm thick. Train mdf is between 6 and 6.5mm
+The nuts are 3.15mm thick
 
 

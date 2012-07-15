@@ -89,7 +89,17 @@ void setup(void) {
 
   /* Set up timer for stepper */
   TCCR0A = 1 << WGM01; // CTC mode
-  TCCR0B = _BV(CS02) | _BV(CS00); // clock/1024
+  /* CLock Select bits:
+     CS02 CS01 CS00 
+        0    0    0  No clock (stopped)
+        0    0    1  system clock (no prescaling)
+        0    1    0  clk/8 (prescaled by 8)
+        0    1    1  clk/64
+        1    0    0  clk/256
+        1    0    1  clk/1024  */
+  //TCCR0B = _BV(CS02) | _BV(CS00); // clock/1024
+  TCCR0B = _BV(CS01) | _BV(CS00); // clock/1024
+
   OCR0A = 255;
   TIMSK0 = _BV(OCIE0A); //Output compare intterupt enable 0a
 
