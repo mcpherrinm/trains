@@ -1,0 +1,39 @@
+Monorail specifications
+-----------------------
+
+The track is made from 5/8" (todo: confirm this is what I was using) MDF (or
+whatever).
+
+The track is nominally 75 mm wide, up to 76mm and down to 72mm.  Trains should
+be designed to allow straight 78mm track, and to run on 70mm.
+
+
+On top of the track, at least 50mm of clearance from the top surface.  Beside
+the outside of the track, the same? (Todo: measure current prototype and
+increase 1.5x). Until todo, assume 1 track width, ie, 74mm.  non-powered stock
+must allow half that clearance, for denser storage tracks.  Power can then only
+access one of the adjacent sidings.  That shouldn't be an issue, but that
+constraint ought to be added to control software.
+
+Turnouts:
+Several possible designs.  A single moving piece that swings between two
+tracks.  Two swinging pieces on each branch, connected by a linkage. I think
+the two-piece design could get nicer joins, but that's just guessing.
+More details after some prototypes are built.
+
+Initially, track is minimally graded, but finalized designs will allow for
+grade testing.  At least 50% of the flat speed should be obtainable.  (but
+really, as long as it doesn't slip).  Grades could have surface coatings for
+additional traction -- MDF isn't the best surface.  Hockey tape?
+
+Power options are still being evaluated.  Initially, trains are being tethered
+to power.  Battery power in stage 2, and then some hybrid online charging
+solution.
+
+
+
+Material specs:
+Track MDF is between 17 and 18mm thick. Train mdf is between 6 and 6.5mm
+The nuts are 3.15mm thick
+
+

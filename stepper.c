@@ -6,22 +6,27 @@
 /*
 
 Full step sequence:
-| Coils |          Signals          |
-|-----------------------------------|
-| A | B | EnA In1 In2 | EnB In3 In4 |
-|-----------------------------------|
-| + |   |  1   1   0  |  0   X   X  |
-|   | + |  0   X   X  |  1   1   0  |
-| - |   |  1   0   1  |  0   X   X  |
+| Coils |          Signals          |   Waveforms:
+|-----------------------------------|   EnA -_-_-_-_
+| A | B | EnA In1 In2 | EnB In3 In4 |   In1 --__--__
+|-----------------------------------|   In2 __--__--  = !In1
+| + |   |  1   1   0  |  0   X   X  |   EnB _-_-_-_-  = !EnA
+|   | + |  0   X   X  |  1   1   0  |   In3 --__--__  = In1
+| - |   |  1   0   1  |  0   X   X  |   In4 __--__--  = In2   
 |   | - |  0   X   X  |  1   0   1  |
 
-Waveforms:
-EnA -_-_-_-_
-In1 --__--__
-In2 __--__--  = !In1
-EnB _-_-_-_-  = !EnA
-In3 --__--__  = In1
-In4 __--__--  = In2
+Now, reverse sequence:
+| Coils |          Signals          |  Waveforms with don't cares chosen:
+|-----------------------------------|  EnA _-_-_-_-
+| A | B | EnA In1 In2 | EnB In3 In4 |  In1 --__--__
+|-----------------------------------|  In2 __--__--
+|   | + |  0   X   X  |  1   1   0  |  EnB -_-_-_-_
+| + |   |  1   1   0  |  0   X   X  |  In3 --__--__
+|   | - |  0   X   X  |  1   0   1  |  In4 __--__--
+| - |   |  1   0   1  |  0   X   X  |
+
+Observe carefully: The In* pins have the same form, but we just have to invert
+the enable bits.  Very convenient.
 */
 
 /* Once I find a hardware not-gate I can halve pin count */
@@ -34,21 +39,32 @@ static const int PIN_In2 = 5;
 static const int PIN_In3 = 6;
 static const int PIN_In4 = 7;
 
-/*
-1 ^ 1 = 0
-1 ^ 0 = 1
-0 ^ 1 = 1
-0 ^ 0 = 0
-*/
-
 ISR(TIMER0_COMPA_vect) {
-  if(!(PIND & _BV(PD0))) {
+  if(!(PINC & _BV(PC0))) {
     // only run when button held
+    // Danger: This leaves coils on.
+    // it might be better to just put a switch on both enable lines
     return;
   }
+
+  static bool reversing = false;
+
+  if(PINC & _BV(PC1)) {
+    if(!reversing) {
+      reversing = !reversing;
+      PORTD ^= 0b00001100;
+    }
+  } else {
+    if(reversing) {
+      reversing = !reversing;
+      PORTD ^= 0b00001100;
+    }
+  }
+
+  /* Enable toggles twice as fast as others */
   static bool flippy = false;
   flippy = !flippy;
-  if(flippy) {  // alternating times
+  if(flippy) { 
     /*flip all bits*/
     PORTD ^= 0b11111100;
   } else {
@@ -60,26 +76,42 @@ ISR(TIMER0_COMPA_vect) {
 void setup(void) {
   /*bit 1 is for serial */
   DDRD = 0b11111110;
-  DDRC = 0; // In particular, PD0 is unset, ie, input
-  PORTC = 1; // Use built-in pull-up resistor.
+  DDRC = 0;        /* Use port C for input */
+  PORTC = 0xFF;  /* And enable pull-up resistors on them */
 
   /* On: EnA, In1, In3.
      Off: Enb, In2, In4.*/
   PORTD = 0b01010100;
+ 
+  if(PINC & _BV(PC1)) {
+    PORTD ^= 0b00001100;
+  }
 
   /* Set up timer for stepper */
   TCCR0A = 1 << WGM01; // CTC mode
-  TCCR0B = _BV(CS02) | _BV(CS00); // clock/1024
+  /* CLock Select bits:
+     CS02 CS01 CS00 
+        0    0    0  No clock (stopped)
+        0    0    1  system clock (no prescaling)
+        0    1    0  clk/8 (prescaled by 8)
+        0    1    1  clk/64
+        1    0    0  clk/256
+        1    0    1  clk/1024  */
+  //TCCR0B = _BV(CS02) | _BV(CS00); // clock/1024
+  TCCR0B = _BV(CS01) | _BV(CS00); // clock/1024
+
   OCR0A = 255;
   TIMSK0 = _BV(OCIE0A); //Output compare intterupt enable 0a
 
-  /* and hang out */
+  /* Enable interrupts */
   sei();
 }
 
 void loop(void) { }
 
+#ifdef INCLUDE_ARDUINO_MAIN
 int main(void) {
   setup();
   while(true){loop();}
 }
+#endif
